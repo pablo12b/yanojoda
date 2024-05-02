@@ -7,9 +7,10 @@ import javax.naming.InitialContext;
 import javax.swing.*;
 import ec.edu.ups.ppw63.demo63.business.GestionClientesRemoto;
 import ec.edu.ups.ppw63.demo63.model.Cliente;
+import ec.edu.ups.ppw63.demo63.model.DetalleFactura;
 
-public class ClienteGUI extends JFrame implements ActionListener {
-    JTextField dniField, nombreField;
+public class ClienteGUI extends JFrame {
+    JTextField dniField, nombreField, idField;
     JButton agregarButton, listarButton, actualizarButton, eliminarButton;
     JTextArea listaArea;
     GestionClientesRemoto gestionClientes;
@@ -21,6 +22,7 @@ public class ClienteGUI extends JFrame implements ActionListener {
 
         // Configurar componentes de la interfaz
         dniField = new JTextField(10);
+        idField = new JTextField(10);
         nombreField = new JTextField(20);
         agregarButton = new JButton("Agregar");
         listarButton = new JButton("Listar");
@@ -29,6 +31,8 @@ public class ClienteGUI extends JFrame implements ActionListener {
         listaArea = new JTextArea(10, 30);
 
         JPanel inputPanel = new JPanel();
+        inputPanel.add(new JLabel("ID:"));
+        inputPanel.add(idField);
         inputPanel.add(new JLabel("DNI:"));
         inputPanel.add(dniField);
         inputPanel.add(new JLabel("Nombre:"));
@@ -45,10 +49,10 @@ public class ClienteGUI extends JFrame implements ActionListener {
         mainPanel.add(scrollPane);
 
         // Agregar ActionListener a los botones
-        agregarButton.addActionListener(this);
-        listarButton.addActionListener(this);
-        actualizarButton.addActionListener(this);
-        eliminarButton.addActionListener(this);
+        agregarButton.addActionListener(e -> agregarCliente());
+        listarButton.addActionListener(e -> listarCliente());
+        actualizarButton.addActionListener(e -> actualizarCliente());
+        eliminarButton.addActionListener(e -> eliminarCliente());
 
         // Configurar la ventana
         add(mainPanel);
@@ -56,49 +60,65 @@ public class ClienteGUI extends JFrame implements ActionListener {
         pack();
         setVisible(true);
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == agregarButton) {
-            Cliente cliente = new Cliente();
-            cliente.setDni(dniField.getText());
-            cliente.setNombre(nombreField.getText());
-            try {
-                gestionClientes.guardarClientes(cliente);
-                listaArea.setText("Cliente agregado correctamente.");
-            } catch (Exception ex) {
-                listaArea.setText("Error al agregar el cliente: " + ex.getMessage());
-            }
-        } else if (e.getSource() == listarButton) {
-            try {
-                listaArea.setText(gestionClientes.getClientes().toString());
-            } catch (Exception ex) {
-                listaArea.setText("Error al listar clientes: " + ex.getMessage());
-            }
-        } else if (e.getSource() == actualizarButton) {
-        	Cliente cliente = new Cliente();
-            cliente.setDni(dniField.getText());
-            cliente.setNombre(nombreField.getText());
-            try {
-                gestionClientes.actualizarCliente(cliente);
-                listaArea.setText("Cliente agregado correctamente.");
-            } catch (Exception ex) {
-                listaArea.setText("Error al agregar el cliente: " + ex.getMessage());
-            }
-            // Lógica para actualizar un cliente
-        } else if (e.getSource() == eliminarButton) {
-            // Lógica para eliminar un cliente
-        	Cliente cliente = new Cliente();
-            cliente.setDni(dniField.getText());
-            cliente.setNombre(nombreField.getText());
-            try {
-                gestionClientes.borrarCliente(cliente.getCodigo());
-                listaArea.setText("Cliente agregado correctamente.");
-            } catch (Exception ex) {
-                listaArea.setText("Error al agregar el cliente: " + ex.getMessage());
-            }
+    
+    private void agregarCliente() {
+    	listaArea.setText("");
+        Cliente cliente = new Cliente();
+        cliente.setCodigo(Integer.parseInt(idField.getText()));
+        cliente.setDni(dniField.getText());
+        cliente.setNombre(nombreField.getText());
+        try {
+            gestionClientes.guardarClientes(cliente);
+            listaArea.setText("Cliente agregado correctamente.");
+        } catch (Exception ex) {
+            listaArea.setText("Error al agregar el cliente: " + ex.getMessage());
         }
     }
+    
+    private void listarCliente() {
+    	listaArea.setText("");
+        try {
+        	StringBuilder clientes = new StringBuilder();
+        	clientes.append("Detalles de Factura:\n");
+            for (Cliente cliente : gestionClientes.getClientes()) {
+            	clientes.append("ID: ").append(cliente.getCodigo())
+                        .append(", DNI: ").append(cliente.getDni())
+                        .append(", Nombre: ").append(cliente.getNombre())
+                        .append("\n");
+            }
+            listaArea.setText(clientes.toString());
+        } catch (Exception ex) {
+            listaArea.setText("Error al listar clientes: " + ex.getMessage());
+        }
+    }
+    
+    private void actualizarCliente() {
+    	listaArea.setText("");
+    	Cliente cliente = new Cliente();
+    	cliente.setCodigo(Integer.parseInt(idField.getText()));
+        cliente.setDni(dniField.getText());
+        cliente.setNombre(nombreField.getText());
+        try {
+            gestionClientes.actualizarCliente(cliente);
+            listaArea.setText("Cliente agregado correctamente.");
+        } catch (Exception ex) {
+            listaArea.setText("Error al agregar el cliente: " + ex.getMessage());
+        }
+    }
+    
+    private void eliminarCliente() {
+    	listaArea.setText("");
+        // Lógica para eliminar un cliente
+    	Cliente cliente = new Cliente();
+    	cliente.setCodigo(Integer.parseInt(idField.getText()));
+        try {
+            gestionClientes.borrarCliente(cliente.getCodigo());
+            listaArea.setText("Cliente agregado correctamente.");
+        } catch (Exception ex) {
+            listaArea.setText("Error al agregar el cliente: " + ex.getMessage());
+        }
+    }
+
 
     public static void main(String[] args) {
         try {
