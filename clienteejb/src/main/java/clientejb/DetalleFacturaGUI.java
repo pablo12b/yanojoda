@@ -9,7 +9,7 @@ import ec.edu.ups.ppw63.demo63.business.GestionDetalleFacturasRemoto;
 import ec.edu.ups.ppw63.demo63.model.DetalleFactura;
 
 public class DetalleFacturaGUI extends JFrame {
-    JTextField nombreField, cantidadField, precioField;
+    JTextField nombreField, cantidadField, precioField, idField;
     JButton agregarButton, listarButton, actualizarButton, eliminarButton;
     JTextArea listaArea;
     GestionDetalleFacturasRemoto gestionFacturas;
@@ -23,6 +23,7 @@ public class DetalleFacturaGUI extends JFrame {
         nombreField = new JTextField(20);
         cantidadField = new JTextField(5);
         precioField = new JTextField(10);
+        idField = new JTextField(10);
         agregarButton = new JButton("Agregar");
         listarButton = new JButton("Listar");
         actualizarButton = new JButton("Actualizar");
@@ -30,6 +31,8 @@ public class DetalleFacturaGUI extends JFrame {
         listaArea = new JTextArea(10, 30);
 
         JPanel inputPanel = new JPanel();
+        inputPanel.add(new JLabel("ID:"));
+        inputPanel.add(idField);
         inputPanel.add(new JLabel("Nombre:"));
         inputPanel.add(nombreField);
         inputPanel.add(new JLabel("Cantidad:"));
@@ -96,6 +99,7 @@ public class DetalleFacturaGUI extends JFrame {
     private void actualizarDetalleFactura() {
     	listaArea.setText("");
     	DetalleFactura detalle = new DetalleFactura();
+    	detalle.setCodigo(Integer.parseInt(idField.getText()));
     	detalle.setCantidad(Integer.parseInt(cantidadField.getText()));
     	detalle.setNombre(nombreField.getText());
     	detalle.setPrecio(Double.parseDouble(precioField.getText()));
@@ -110,6 +114,7 @@ public class DetalleFacturaGUI extends JFrame {
     private void eliminarDetalleFactura() {
     	listaArea.setText("");
     	DetalleFactura detalle = new DetalleFactura();
+    	detalle.setCodigo(Integer.parseInt(idField.getText()));
     	detalle.setCantidad(Integer.parseInt(cantidadField.getText()));
     	detalle.setNombre(nombreField.getText());
     	detalle.setPrecio(Double.parseDouble(precioField.getText()));

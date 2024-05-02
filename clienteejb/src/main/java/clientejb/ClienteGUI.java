@@ -1,13 +1,11 @@
 package clientejb;
 
-import java.awt.event.*;
 import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.swing.*;
 import ec.edu.ups.ppw63.demo63.business.GestionClientesRemoto;
 import ec.edu.ups.ppw63.demo63.model.Cliente;
-import ec.edu.ups.ppw63.demo63.model.DetalleFactura;
 
 public class ClienteGUI extends JFrame {
     JTextField dniField, nombreField, idField;
