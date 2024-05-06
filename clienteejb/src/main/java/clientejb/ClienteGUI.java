@@ -1,5 +1,6 @@
 package clientejb;
 
+import java.io.Console;
 import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.InitialContext;
